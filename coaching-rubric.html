@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Coaching Rubric · Skills × Dimensions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0c09;
+    --bg-elev: #171310;
+    --bg-card: #1c1714;
+    --ink: #f3ecde;
+    --ink-muted: #968b7b;
+    --ink-faint: #5a5247;
+    --accent: #d4a356;
+    --accent-bright: #f0c274;
+    --accent-dim: #6b5029;
+    --line: #2a231d;
+    --line-bright: #3d332a;
+
+    /* Cluster colors */
+    --posture: #d4a356;     /* amber */
+    --diagnosis: #8ea7b5;   /* cool blue-gray */
+    --teaching: #c97a5a;    /* terracotta */
+
+    /* Scoring ladder */
+    --score-high: #8aa373;
+    --score-mid: #968b7b;
+    --score-low: #a8634a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Instrument Sans', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    font-weight: 400;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 0%, rgba(212,163,86,0.06), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(142,167,181,0.04), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: overlay;
+  }
+
+  main { position: relative; z-index: 2; }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  /* --- Top Bar --- */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    background: rgba(14,12,9,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 100;
+  }
+  .topbar-inner { display: flex; justify-content: space-between; align-items: center; }
+  .logo {
+    font-family: 'Instrument Serif', serif;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+  }
+  .logo em { color: var(--accent); font-style: italic; }
+  .topbar-meta {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    font-weight: 500;
+  }
+  .topbar-nav {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .topbar-nav a {
+    color: var(--ink-faint);
+    text-decoration: none;
+    padding: 6px 0;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .topbar-nav a:hover { color: var(--ink); }
+  .topbar-nav a.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .topbar-nav a .arrow {
+    font-size: 10px;
+    opacity: 0.6;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .topbar-nav a:hover .arrow { opacity: 1; transform: translateX(-2px); }
+  @media (max-width: 640px) {
+    .topbar-nav { gap: 16px; font-size: 10px; letter-spacing: 0.1em; }
+  }
+
+  /* --- Hero --- */
+  .hero {
+    padding: 100px 0 70px;
+    border-bottom: 1px solid var(--line);
+  }
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .hero h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(52px, 8vw, 104px);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    font-weight: 400;
+    max-width: 16ch;
+    margin-bottom: 36px;
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero-lede {
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink-muted);
+    max-width: 62ch;
+  }
+
+  /* --- Cluster Key --- */
+  .clusters {
+    padding: 80px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .clusters-intro {
+    max-width: 62ch;
+    margin-bottom: 48px;
+  }
+  .clusters-intro .label {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .clusters-intro h2 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 40px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    margin-bottom: 16px;
+  }
+  .clusters-intro h2 em { color: var(--accent); font-style: italic; }
+  .clusters-intro p {
+    color: var(--ink-muted);
+    font-size: 16px;
+  }
+
+  .cluster-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .cluster-card {
+    padding: 32px;
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+    position: relative;
+    transition: border-color 0.3s;
+  }
+  .cluster-card:hover { border-color: var(--line-bright); }
+  .cluster-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--c, var(--accent));
+  }
+  .cluster-card[data-c="posture"] { --c: var(--posture); }
+  .cluster-card[data-c="diagnosis"] { --c: var(--diagnosis); }
+  .cluster-card[data-c="teaching"] { --c: var(--teaching); }
+
+  .cluster-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .cluster-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 32px;
+    line-height: 1.1;
+    font-weight: 400;
+    margin-bottom: 10px;
+    letter-spacing: -0.015em;
+  }
+  .cluster-q {
+    font-style: italic;
+    font-family: 'Instrument Serif', serif;
+    color: var(--c);
+    font-size: 17px;
+    margin-bottom: 20px;
+  }
+  .cluster-desc {
+    color: var(--ink-muted);
+    font-size: 14px;
+    line-height: 1.55;
+    margin-bottom: 20px;
+  }
+  .cluster-skills {
+    list-style: none;
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+  }
+  .cluster-skills li {
+    font-size: 13px;
+    padding: 5px 0;
+    color: var(--ink);
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .cluster-skills li::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background: var(--c);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* --- Section header --- */
+  .section-head {
+    padding: 100px 0 60px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 60px;
+    align-items: end;
+  }
+  .section-head .num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 110px;
+    line-height: 1;
+    color: var(--accent-dim);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .section-head h2 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 52px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+  .section-head h2 em { color: var(--accent); font-style: italic; }
+  .section-head p {
+    color: var(--ink-muted);
+    max-width: 52ch;
+    margin-top: 20px;
+    font-size: 16px;
+  }
+
+  /* --- Dimension Cards --- */
+  .dimensions {
+    padding-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .dim {
+    padding: 56px 0;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 64px;
+  }
+  .dim:last-child { border-bottom: 1px solid var(--line); }
+
+  .dim-head {
+    position: sticky;
+    top: 90px;
+    align-self: start;
+    height: fit-content;
+  }
+  .dim-num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 88px;
+    line-height: 0.9;
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 400;
+    margin-bottom: 20px;
+    display: block;
+  }
+  .dim-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 38px;
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    font-weight: 400;
+    margin-bottom: 16px;
+  }
+  .dim-def {
+    color: var(--ink-muted);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .dim-body {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  .block-label {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* Scoring ladder */
+  .ladder { display: flex; flex-direction: column; gap: 0; }
+  .rung {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 20px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+  }
+  .rung:last-child { border-bottom: none; }
+  .rung-score {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--s, var(--ink));
+  }
+  .rung-score span {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--s, var(--ink));
+    opacity: 0.7;
+    display: block;
+    margin-top: 2px;
+  }
+  .rung[data-s="high"] { --s: var(--score-high); }
+  .rung[data-s="mid"] { --s: var(--score-mid); }
+  .rung[data-s="low"] { --s: var(--score-low); }
+
+  .rung-text { font-size: 14.5px; line-height: 1.55; color: var(--ink); }
+
+  /* Skill chips */
+  .skills-block { display: flex; flex-direction: column; gap: 18px; }
+  .skills-row { display: flex; flex-direction: column; gap: 10px; }
+  .skills-row-label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    font-weight: 600;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--c, var(--line));
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    background: transparent;
+    transition: background 0.2s;
+  }
+  .chip.primary {
+    background: color-mix(in srgb, var(--c) 12%, transparent);
+    border-color: var(--c);
+  }
+  .chip.secondary {
+    border-style: dashed;
+    color: var(--ink-muted);
+  }
+  .chip[data-c="posture"] { --c: var(--posture); }
+  .chip[data-c="diagnosis"] { --c: var(--diagnosis); }
+  .chip[data-c="teaching"] { --c: var(--teaching); }
+  .chip-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--c);
+  }
+
+  /* Coach-first block */
+  .coach-first {
+    padding: 24px 28px;
+    background: var(--bg-elev);
+    border-left: 2px solid var(--accent);
+    position: relative;
+  }
+  .coach-first-label {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .coach-first-skill {
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+  .coach-first-why {
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.55;
+  }
+
+  /* --- Matrix --- */
+  .matrix-section {
+    padding: 100px 0;
+    border-top: 1px solid var(--line);
+    background: linear-gradient(180deg, transparent, rgba(212,163,86,0.02));
+  }
+  .matrix-wrap {
+    margin-top: 60px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .matrix {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 880px;
+  }
+  .matrix thead th {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    padding: 14px 8px;
+    text-align: center;
+    border-bottom: 1px solid var(--line-bright);
+    vertical-align: bottom;
+    line-height: 1.3;
+    width: 80px;
+  }
+  .matrix thead th.skill-col {
+    text-align: left;
+    min-width: 220px;
+    padding-left: 0;
+  }
+  .matrix tbody tr {
+    border-bottom: 1px solid var(--line);
+  }
+  .matrix tbody td {
+    padding: 14px 8px;
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+    font-size: 14px;
+  }
+  .matrix .skill-cell {
+    text-align: left;
+    padding-left: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .matrix .cluster-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .matrix .cluster-dot[data-c="posture"] { background: var(--posture); }
+  .matrix .cluster-dot[data-c="diagnosis"] { background: var(--diagnosis); }
+  .matrix .cluster-dot[data-c="teaching"] { background: var(--teaching); }
+
+  .matrix .cluster-break td {
+    padding: 6px 0 0;
+    border-bottom: none;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-br);
+    font-weight: 600;
+    text-align: left;
+  }
+  .matrix .cluster-break[data-c="posture"] { --c-br: var(--posture); }
+  .matrix .cluster-break[data-c="diagnosis"] { --c-br: var(--diagnosis); }
+  .matrix .cluster-break[data-c="teaching"] { --c-br: var(--teaching); }
+
+  .mark {
+    display: inline-block;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    line-height: 0;
+  }
+  .mark.primary { background: var(--accent); border: 1px solid var(--accent); }
+  .mark.secondary { background: transparent; border: 1px solid var(--ink-muted); }
+
+  .matrix-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--ink-muted);
+    letter-spacing: 0.02em;
+  }
+  .matrix-legend .item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .matrix-insight {
+    margin-top: 48px;
+    padding: 32px 36px;
+    background: var(--bg-elev);
+    border-left: 2px solid var(--accent);
+  }
+  .matrix-insight h4 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 24px;
+    margin-bottom: 12px;
+    font-weight: 400;
+    font-style: italic;
+  }
+  .matrix-insight p {
+    font-size: 15px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  /* --- Usage section --- */
+  .usage {
+    padding: 100px 0;
+    border-top: 1px solid var(--line);
+  }
+  .usage-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+    margin-top: 50px;
+  }
+  .usage-card {
+    padding: 36px 32px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .usage-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 16px;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  .usage-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 26px;
+    line-height: 1.15;
+    font-weight: 400;
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .usage-title em { color: var(--accent); font-style: italic; }
+  .usage-desc {
+    color: var(--ink-muted);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  /* --- Closing --- */
+  .closing {
+    padding: 120px 0;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+  .closing-quote {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(32px, 4.5vw, 56px);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    max-width: 26ch;
+    margin: 0 auto 24px;
+  }
+  .closing-quote em { color: var(--accent); font-style: italic; }
+  .closing-attrib {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+  }
+
+  /* --- Footer --- */
+  .footer {
+    border-top: 1px solid var(--line);
+    padding: 40px 0;
+    font-size: 13px;
+    color: var(--ink-faint);
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* --- Animations --- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero h1, .hero-lede { animation: fadeUp 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  .hero-lede { animation-delay: 0.1s; }
+
+  /* --- Responsive --- */
+  @media (max-width: 960px) {
+    .container { padding: 0 24px; }
+    .cluster-grid { grid-template-columns: 1fr; }
+    .section-head { grid-template-columns: 1fr; gap: 16px; }
+    .section-head .num { font-size: 72px; }
+    .dim { grid-template-columns: 1fr; gap: 32px; }
+    .dim-head { position: static; }
+    .usage-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo">The Coaching <em>Rubric</em></div>
+      <nav class="topbar-nav">
+        <a href="index.html"><span class="arrow">←</span> Framework</a>
+        <a href="coaching-rubric.html" class="active">Rubric</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="eyebrow">From Score to Cause</div>
+      <h1>A score tells you <em>what</em>. The skill underneath tells you <em>why</em>.</h1>
+      <p class="hero-lede">
+        This rubric sits underneath the six scoring dimensions samdesk already tracks.
+        For each dimension, it names the underlying Dunford-style skills that produce it,
+        flags which to coach first when the score is weak, and gives the CRO a
+        structured answer to the only question that matters in a 1:1:
+        <em>what do we actually work on?</em>
+      </p>
+    </div>
+  </section>
+
+  <!-- CLUSTER KEY -->
+  <section class="clusters">
+    <div class="container">
+      <div class="clusters-intro">
+        <div class="label">The Three Clusters</div>
+        <h2>Ten skills collapse into <em>three moves</em>.</h2>
+        <p>
+          Every Dunford-style skill falls into one of three postures. Coaching is
+          almost always more productive when framed at the cluster level first —
+          you fix the posture before you fine-tune the tactic.
+        </p>
+      </div>
+
+      <div class="cluster-grid">
+        <div class="cluster-card" data-c="posture">
+          <div class="cluster-label">Cluster 01 · Posture</div>
+          <div class="cluster-title">How you occupy the conversation.</div>
+          <div class="cluster-q">"Who's driving?"</div>
+          <div class="cluster-desc">
+            Character and conviction skills. Built slowly through market knowledge
+            and reps. Hardest to coach in a role-play, highest leverage in the first
+            ninety seconds of any call.
+          </div>
+          <ul class="cluster-skills">
+            <li>Point-of-View Framing</li>
+            <li>Problem Discipline</li>
+            <li>Conversation Control</li>
+          </ul>
+        </div>
+
+        <div class="cluster-card" data-c="diagnosis">
+          <div class="cluster-label">Cluster 02 · Diagnosis</div>
+          <div class="cluster-title">What you extract.</div>
+          <div class="cluster-q">"What's actually going on?"</div>
+          <div class="cluster-desc">
+            Investigative muscles. The most teachable cluster through frameworks and
+            live reps. Most reps are adequate here; few are great. Feeds everything
+            downstream.
+          </div>
+          <ul class="cluster-skills">
+            <li>Diagnostic Questioning</li>
+            <li>Listening for Signals</li>
+            <li>Alternative Mapping</li>
+          </ul>
+        </div>
+
+        <div class="cluster-card" data-c="teaching">
+          <div class="cluster-label">Cluster 03 · Teaching</div>
+          <div class="cluster-title">What you give back.</div>
+          <div class="cluster-q">"Did the buyer learn something?"</div>
+          <div class="cluster-desc">
+            Synthesis under pressure. Requires a deep library of patterns from prior
+            calls. The hardest cluster to develop and the one that most separates
+            great reps from competent ones.
+          </div>
+          <ul class="cluster-skills">
+            <li>Gap Identification</li>
+            <li>Insight Delivery (Reframing)</li>
+            <li>Impact Quantification</li>
+            <li>Future-State Facilitation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIMENSION CARDS -->
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <div class="num">01</div>
+        <div>
+          <h2>The six dimensions, <em>diagnosed</em>.</h2>
+          <p>
+            Each of samdesk's existing scoring dimensions is produced by a specific
+            set of underlying skills. When a score is low, the rubric tells you
+            exactly which skill to work on — and which to work on <em>first</em>.
+          </p>
+        </div>
+      </div>
+
+      <div class="dimensions">
+
+        <!-- DIMENSION 1: PROBLEM FRAMING -->
+        <div class="dim">
+          <div class="dim-head">
+            <span class="dim-num">01</span>
+            <h3 class="dim-title">Problem Framing</h3>
+            <p class="dim-def">
+              Does the rep enter with a point of view on what matters in this market,
+              and refine the buyer's framing within the first few minutes?
+            </p>
+          </div>
+          <div class="dim-body">
+            <div>
+              <div class="block-label">Scoring Behaviors</div>
+              <div class="ladder">
+                <div class="rung" data-s="high">
+                  <div class="rung-score">5/5<span>Exemplary</span></div>
+                  <div class="rung-text">Opens with a clear POV. Challenges or refines the buyer's framing in the first 2–3 minutes. The problem gets named differently than the buyer would have named it on their own.</div>
+                </div>
+                <div class="rung" data-s="mid">
+                  <div class="rung-score">3/5<span>Competent</span></div>
+                  <div class="rung-text">Has a perspective but waits to share it. Accepts the buyer's framing, then pivots later. No early tension in the conversation.</div>
+                </div>
+                <div class="rung" data-s="low">
+                  <div class="rung-score">1/5<span>Failing</span></div>
+                  <div class="rung-text">Opens with "so tell me about your challenges" and adopts whatever the buyer says as the frame. No refinement, no tension, no teaching.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="skills-block">
+              <div class="block-label">Skills That Produce This</div>
+              <div class="skills-row">
+                <div class="skills-row-label">Primary</div>
+                <div class="chips">
+                  <span class="chip primary" data-c="posture"><span class="chip-dot"></span>Point-of-View Framing</span>
+                  <span class="chip primary" data-c="teaching"><span class="chip-dot"></span>Insight Delivery</span>
+                </div>
+              </div>
+              <div class="skills-row">
+                <div class="skills-row-label">Secondary</div>
+                <div class="chips">
+                  <span class="chip secondary" data-c="posture"><span class="chip-dot"></span>Problem Discipline</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="coach-first">
+              <div class="coach-first-label">Coach First</div>
+              <div class="coach-first-skill">Point-of-View Framing</div>
+              <p class="coach-first-why">
+                You can't deliver insight without a frame to deliver it from. Until
+                the rep has a defensible POV on the market, every downstream fix is
+                cosmetic. Work on building and rehearsing the opening frame before
+                anything else.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- DIMENSION 2: DISCOVERY DEPTH -->
+        <div class="dim">
+          <div class="dim-head">
+            <span class="dim-num">02</span>
+            <h3 class="dim-title">Discovery Depth</h3>
+            <p class="dim-def">
+              Does the rep uncover the buyer's actual process, hidden friction, and
+              workarounds — not just a surface list of tools?
+            </p>
+          </div>
+          <div class="dim-body">
+            <div>
+              <div class="block-label">Scoring Behaviors</div>
+              <div class="ladder">
+                <div class="rung" data-s="high">
+                  <div class="rung-score">5/5<span>Exemplary</span></div>
+                  <div class="rung-text">Maps the buyer's actual workflow, not just their tool stack. Surfaces friction the buyer has normalized. Catches hesitation and digs deeper.</div>
+                </div>
+                <div class="rung" data-s="mid">
+                  <div class="rung-score">3/5<span>Competent</span></div>
+                  <div class="rung-text">Gets a solid picture of current state. Misses a few chances to probe edge cases or workarounds. Accepts some surface answers.</div>
+                </div>
+                <div class="rung" data-s="low">
+                  <div class="rung-score">1/5<span>Failing</span></div>
+                  <div class="rung-text">Surface-level tool list. Accepts first answers. No follow-ups on hesitation or vague claims. Doesn't understand how the work actually gets done.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="skills-block">
+              <div class="block-label">Skills That Produce This</div>
+              <div class="skills-row">
+                <div class="skills-row-label">Primary</div>
+                <div class="chips">
+                  <span class="chip primary" data-c="diagnosis"><span class="chip-dot"></span>Diagnostic Questioning</span>
+                  <span class="chip primary" data-c="diagnosis"><span class="chip-dot"></span>Listening for Signals</span>
+                </div>
+              </div>
+              <div class="skills-row">
+                <div class="skills-row-label">Secondary</div>
+                <div class="chips">
+                  <span class="chip secondary" data-c="posture"><span class="chip-dot"></span>Conversation Control</span>
+                  <span class="chip secondary" data-c="teaching"><span class="chip-dot"></span>Gap Identification</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="coach-first">
+              <div class="coach-first-label">Coach First</div>
+              <div class="coach-first-skill">Diagnostic Questioning</div>
+              <p class="coach-first-why">
+                Depth is built on the base extraction muscle. Teach the "process vs
+                tools" distinction and the five layers of any workflow (inputs,
+                actors, decisions, outputs, exceptions) before working on listening
+                or gap identification.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- DIMENSION 3: CORRECT CASE STUDY -->
+        <div class="dim">
+          <div class="dim-head">
+            <span class="dim-num">03</span>
+            <h3 class="dim-title">Correct Case Study</h3>
+            <p class="dim-def">
+              Does the rep deploy a case study that matches the buyer's industry,
+              scale, and problem shape — not the rep's favorite default?
+            </p>
+          </div>
+          <div class="dim-body">
+            <div>
+              <div class="block-label">Scoring Behaviors</div>
+              <div class="ladder">
+                <div class="rung" data-s="high">
+                  <div class="rung-score">5/5<span>Exemplary</span></div>
+                  <div class="rung-text">Case study mirrors the buyer's situation on the axes that matter. Rep earned the right to use it via discovery. The buyer sees themselves in it.</div>
+                </div>
+                <div class="rung" data-s="mid">
+                  <div class="rung-score">3/5<span>Competent</span></div>
+                  <div class="rung-text">Uses an appropriate case but generic in its relevance. Some analogical stretch required to make it fit.</div>
+                </div>
+                <div class="rung" data-s="low">
+                  <div class="rung-score">1/5<span>Failing</span></div>
+                  <div class="rung-text">Defaults to DoorDash regardless of buyer context. Case selected by habit, not fit. Buyer doesn't see themselves in it.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="skills-block">
+              <div class="block-label">Skills That Produce This</div>
+              <div class="skills-row">
+                <div class="skills-row-label">Primary</div>
+                <div class="chips">
+                  <span class="chip primary" data-c="posture"><span class="chip-dot"></span>Problem Discipline</span>
+                  <span class="chip primary" data-c="diagnosis"><span class="chip-dot"></span>Listening for Signals</span>
+                </div>
+              </div>
+              <div class="skills-row">
+                <div class="skills-row-label">Secondary</div>
+                <div class="chips">
+                  <span class="chip secondary" data-c="teaching"><span class="chip-dot"></span>Insight Delivery</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="coach-first">
+              <div class="coach-first-label">Coach First</div>
+              <div class="coach-first-skill">Problem Discipline</div>
+              <p class="coach-first-why">
+                Reps default to a favorite case when they haven't internalized which
+                case fits which pattern. Build a case-study decision tree (industry
+                × problem-shape × scale) so the rep can match in real time instead
+                of reaching for the familiar.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- DIMENSION 4: COMPETITIVE POSITIONING -->
+        <div class="dim">
+          <div class="dim-head">
+            <span class="dim-num">04</span>
+            <h3 class="dim-title">Competitive Positioning</h3>
+            <p class="dim-def">
+              Does the rep name the buyer's current alternative, position against it
+              on the axes that matter, and land the category-level distinction?
+            </p>
+          </div>
+          <div class="dim-body">
+            <div>
+              <div class="block-label">Scoring Behaviors</div>
+              <div class="ladder">
+                <div class="rung" data-s="high">
+                  <div class="rung-score">5/5<span>Exemplary</span></div>
+                  <div class="rung-text">Names the alternative explicitly. Positions on the axes that matter for this buyer. Buyer leaves understanding the category-level difference, not just features.</div>
+                </div>
+                <div class="rung" data-s="mid">
+                  <div class="rung-score">3/5<span>Competent</span></div>
+                  <div class="rung-text">Acknowledges alternatives when prompted. Differentiates on some axes but not the most decisive ones. Feature comparison more than category framing.</div>
+                </div>
+                <div class="rung" data-s="low">
+                  <div class="rung-score">1/5<span>Failing</span></div>
+                  <div class="rung-text">Avoids naming competitors. Reactive when the buyer mentions one. Pure feature list, no axes, no category frame.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="skills-block">
+              <div class="block-label">Skills That Produce This</div>
+              <div class="skills-row">
+                <div class="skills-row-label">Primary</div>
+                <div class="chips">
+                  <span class="chip primary" data-c="diagnosis"><span class="chip-dot"></span>Alternative Mapping</span>
+                  <span class="chip primary" data-c="teaching"><span class="chip-dot"></span>Insight Delivery</span>
+                </div>
+              </div>
+              <div class="skills-row">
+                <div class="skills-row-label">Secondary</div>
+                <div class="chips">
+                  <span class="chip secondary" data-c="posture"><span class="chip-dot"></span>Point-of-View Framing</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="coach-first">
+              <div class="coach-first-label">Coach First</div>
+              <div class="coach-first-skill">Alternative Mapping</div>
+              <p class="coach-first-why">
+                You can't position against an alternative you haven't extracted. If
+                the rep can't name what the buyer would do without samdesk — status
+                quo, internal tooling, or a specific competitor — the positioning
+                will always default to feature comparison. Extract first, position
+                second.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- DIMENSION 5: DEMO SCENARIO ANCHORING -->
+        <div class="dim">
+          <div class="dim-head">
+            <span class="dim-num">05</span>
+            <h3 class="dim-title">Demo Scenario Anchoring</h3>
+            <p class="dim-def">
+              Does the demo use the buyer's own scenarios, geography, and
+              stakeholders — or is it a generic feature tour?
+            </p>
+          </div>
+          <div class="dim-body">
+            <div>
+              <div class="block-label">Scoring Behaviors</div>
+              <div class="ladder">
+                <div class="rung" data-s="high">
+                  <div class="rung-score">5/5<span>Exemplary</span></div>
+                  <div class="rung-text">Every click is a callback to something the buyer said. Uses their geography, their stakeholders, their actual incident types. The demo feels built for them.</div>
+                </div>
+                <div class="rung" data-s="mid">
+                  <div class="rung-score">3/5<span>Competent</span></div>
+                  <div class="rung-text">Uses buyer context for 1–2 marquee moments; the rest runs on a standard path. Locally relevant but not end-to-end personalized.</div>
+                </div>
+                <div class="rung" data-s="low">
+                  <div class="rung-score">1/5<span>Failing</span></div>
+                  <div class="rung-text">Generic demo path. Tours features instead of solving named problems. No callbacks, no local relevance. The demo could run for any prospect unchanged.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="skills-block">
+              <div class="block-label">Skills That Produce This</div>
+              <div class="skills-row">
+                <div class="skills-row-label">Primary</div>
+                <div class="chips">
+                  <span class="chip primary" data-c="teaching"><span class="chip-dot"></span>Impact Quantification</span>
+                  <span class="chip primary" data-c="teaching"><span class="chip-dot"></span>Future-State Facilitation</span>
+                </div>
+              </div>
+              <div class="skills-row">
+                <div class="skills-row-label">Secondary</div>
+                <div class="chips">
+                  <span class="chip secondary" data-c="diagnosis"><span class="chip-dot"></span>Diagnostic Questioning</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="coach-first">
+              <div class="coach-first-label">Coach First</div>
+              <div class="coach-first-skill">Diagnostic Questioning (upstream)</div>
+              <p class="coach-first-why">
+                Weak demo anchoring is almost never a demo problem. It's an
+                extraction problem. If discovery didn't surface the buyer's specific
+                scenarios, the rep has nothing to anchor to. Before touching demo
+                structure, check the discovery that preceded it.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- DIMENSION 6: CONCRETE NEXT STEPS -->
+        <div class="dim">
+          <div class="dim-head">
+            <span class="dim-num">06</span>
+            <h3 class="dim-title">Concrete Next Steps</h3>
+            <p class="dim-def">
+              Does the call end with a mutually owned next action tied to a specific
+              problem or decision?
+            </p>
+          </div>
+          <div class="dim-body">
+            <div>
+              <div class="block-label">Scoring Behaviors</div>
+              <div class="ladder">
+                <div class="rung" data-s="high">
+                  <div class="rung-score">5/5<span>Exemplary</span></div>
+                  <div class="rung-text">Call ends with a specific action, a named owner on each side, a date, and a reason. Buyer knows what they committed to and why.</div>
+                </div>
+                <div class="rung" data-s="mid">
+                  <div class="rung-score">3/5<span>Competent</span></div>
+                  <div class="rung-text">A next step exists but is partially defined. Date set, owners fuzzy. Action disconnected from a specific decision or problem.</div>
+                </div>
+                <div class="rung" data-s="low">
+                  <div class="rung-score">1/5<span>Failing</span></div>
+                  <div class="rung-text">"I'll send over the deck." / "Let's circle back next week." No owner, no reason, no decision tied to the action.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="skills-block">
+              <div class="block-label">Skills That Produce This</div>
+              <div class="skills-row">
+                <div class="skills-row-label">Primary</div>
+                <div class="chips">
+                  <span class="chip primary" data-c="posture"><span class="chip-dot"></span>Conversation Control</span>
+                  <span class="chip primary" data-c="teaching"><span class="chip-dot"></span>Future-State Facilitation</span>
+                </div>
+              </div>
+              <div class="skills-row">
+                <div class="skills-row-label">Secondary</div>
+                <div class="chips">
+                  <span class="chip secondary" data-c="posture"><span class="chip-dot"></span>Problem Discipline</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="coach-first">
+              <div class="coach-first-label">Coach First</div>
+              <div class="coach-first-skill">Conversation Control</div>
+              <p class="coach-first-why">
+                Next steps are the terminal discipline of steering the whole call.
+                If the rep lost the thread mid-call, there's no thread to land on at
+                the end. Coach the habit of naming a decision the call is working
+                toward in the opening minutes — then closing on it explicitly.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILL-LEVERAGE MATRIX -->
+  <section class="matrix-section">
+    <div class="container">
+      <div class="section-head">
+        <div class="num">02</div>
+        <div>
+          <h2>Where the <em>leverage</em> lives.</h2>
+          <p>
+            Some skills touch one dimension. Others touch three. When you're deciding
+            where to invest coaching time across the team, this is the map.
+            Skills with the most primary contributions have the highest leverage
+            per hour of coaching.
+          </p>
+        </div>
+      </div>
+
+      <div class="matrix-wrap">
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th class="skill-col">Skill</th>
+              <th>Problem<br>Framing</th>
+              <th>Discovery<br>Depth</th>
+              <th>Correct<br>Case Study</th>
+              <th>Competitive<br>Positioning</th>
+              <th>Demo<br>Anchoring</th>
+              <th>Concrete<br>Next Steps</th>
+              <th>Primary<br>count</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr class="cluster-break" data-c="posture"><td colspan="8">Cluster 01 · Posture</td></tr>
+
+            <tr>
+              <td class="skill-cell"><span class="cluster-dot" data-c="posture"></span>Point-of-View Framing</td>
+              <td><span class="mark primary"></span></td>
+              <td></td>
+              <td></td>
+              <td><span class="mark secondary"></span></td>
+              <td></td>
+              <td></td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td class="skill-cell"><span class="cluster-dot" data-c="posture"></span>Problem Discipline</td>
+              <td><span class="mark secondary"></span></td>
+              <td></td>
+              <td><span class="mark primary"></span></td>
+              <td></td>
+              <td></td>
+              <td><span class="mark secondary"></span></td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td class="skill-cell"><span class="cluster-dot" data-c="posture"></span>Conversation Control</td>
+              <td></td>
+              <td><span class="mark secondary"></span></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td><span class="mark primary"></span></td>
+              <td>1</td>
+            </tr>
+
+            <tr class="cluster-break" data-c="diagnosis"><td colspan="8">Cluster 02 · Diagnosis</td></tr>
+
+            <tr>
+              <td class="skill-cell"><span class="cluster-dot" data-c="diagnosis"></span>Diagnostic Questioning</td>
+              <td></td>
+              <td><span class="mark primary"></span></td>
+              <td></td>
+              <td></td>
+              <td><span class="mark secondary"></span></td>
+              <td></td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td class="skill-cell"><span class="cluster-dot" data-c="diagnosis"></span>Listening for Signals</td>
+              <td></td>
+              <td><span class="mark primary"></span></td>
+              <td><span class="mark primary"></span></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td class="skill-cell"><span class="cluster-dot" data-c="diagnosis"></span>Alternative Mapping</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td><span class="mark primary"></span></td>
+              <td></td>
+              <td></td>
+              <td>1</td>
+            </tr>
+
+            <tr class="cluster-break" data-c="teaching"><td colspan="8">Cluster 03 · Teaching</td></tr>
+
+            <tr>
+              <td class="skill-cell"><span class="cluster-dot" data-c="teaching"></span>Gap Identification</td>
+              <td></td>
+              <td><span class="mark secondary"></span></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td class="skill-cell"><span class="cluster-dot" data-c="teaching"></span>Insight Delivery</td>
+              <td><span class="mark primary"></span></td>
+              <td></td>
+              <td><span class="mark secondary"></span></td>
+              <td><span class="mark primary"></span></td>
+              <td></td>
+              <td></td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td class="skill-cell"><span class="cluster-dot" data-c="teaching"></span>Impact Quantification</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td><span class="mark primary"></span></td>
+              <td></td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td class="skill-cell"><span class="cluster-dot" data-c="teaching"></span>Future-State Facilitation</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td><span class="mark primary"></span></td>
+              <td><span class="mark primary"></span></td>
+              <td>2</td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <div class="matrix-legend">
+        <div class="item"><span class="mark primary"></span> Primary contributor</div>
+        <div class="item"><span class="mark secondary"></span> Secondary contributor</div>
+        <div class="item"><span class="cluster-dot" data-c="posture" style="width:8px;height:8px;border-radius:50%;display:inline-block;"></span> Posture</div>
+        <div class="item"><span class="cluster-dot" data-c="diagnosis" style="width:8px;height:8px;border-radius:50%;display:inline-block;"></span> Diagnosis</div>
+        <div class="item"><span class="cluster-dot" data-c="teaching" style="width:8px;height:8px;border-radius:50%;display:inline-block;"></span> Teaching</div>
+      </div>
+
+      <div class="matrix-insight">
+        <h4>Where to invest first.</h4>
+        <p>
+          Three skills carry two primary contributions each: <strong>Listening for
+          Signals</strong>, <strong>Insight Delivery</strong>, and <strong>Future-State
+          Facilitation</strong>. One is Diagnosis, two are Teaching. Posture skills
+          each carry one primary — but they are upstream of everything else, which
+          means coaching them has compounding effects the matrix alone doesn't
+          capture. The practical read: drill Listening and Insight Delivery for
+          quick lift; build Posture for long-term ceiling.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW TO USE -->
+  <section class="usage">
+    <div class="container">
+      <div class="section-head">
+        <div class="num">03</div>
+        <div>
+          <h2>Using this in <em>a 1:1</em>.</h2>
+          <p>
+            The rubric isn't a report format. It's a conversation shape. Three moves
+            turn a score into a coaching plan in under ten minutes.
+          </p>
+        </div>
+      </div>
+
+      <div class="usage-grid">
+        <div class="usage-card">
+          <div class="usage-num">01</div>
+          <h4 class="usage-title">Pull the <em>lowest</em> dimension.</h4>
+          <p class="usage-desc">
+            Start with the weakest score, not the rep's preferred topic. The goal
+            is highest-leverage coaching, which usually means the dimension the rep
+            least wants to discuss.
+          </p>
+        </div>
+        <div class="usage-card">
+          <div class="usage-num">02</div>
+          <h4 class="usage-title">Name the <em>coach-first</em> skill.</h4>
+          <p class="usage-desc">
+            Don't lecture on the whole dimension. Go straight to the upstream skill
+            the rubric points to. "Your Problem Framing score is low because your
+            opening POV isn't set — let's work on that."
+          </p>
+        </div>
+        <div class="usage-card">
+          <div class="usage-num">03</div>
+          <h4 class="usage-title">Assign <em>one</em> rep.</h4>
+          <p class="usage-desc">
+            One skill, one call before the next 1:1, one observable behavior change.
+            Coaching that tries to move three skills at once moves none.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section class="closing">
+    <div class="container">
+      <p class="closing-quote">
+        The score tells you <em>what</em> to talk about. <br>The skill underneath tells you <em>what to do</em>.
+      </p>
+      <div class="closing-attrib">— How the Rubric Earns Its Place</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>The Coaching Rubric · samdesk sales enablement</span>
+      <span>Layers beneath the six-dimension Chorus scorecard</span>
+    </div>
+  </footer>
+
+</main>
+</body>
+</html>

@@ -102,6 +102,39 @@
     color: var(--ink-muted);
     font-weight: 500;
   }
+  .topbar-nav {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .topbar-nav a {
+    color: var(--ink-faint);
+    text-decoration: none;
+    padding: 6px 0;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .topbar-nav a:hover { color: var(--ink); }
+  .topbar-nav a.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .topbar-nav a .arrow {
+    font-size: 10px;
+    opacity: 0.6;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .topbar-nav a:hover .arrow { opacity: 1; transform: translateX(2px); }
+  @media (max-width: 640px) {
+    .topbar-nav { gap: 16px; font-size: 10px; letter-spacing: 0.1em; }
+  }
 
   /* --- Hero --- */
   .hero {
@@ -607,7 +640,10 @@
   <div class="topbar">
     <div class="container topbar-inner">
       <div class="logo">The Discovery <em>Framework</em></div>
-      <div class="topbar-meta">Dunford-Aligned · Coaching Guide</div>
+      <nav class="topbar-nav">
+        <a href="index.html" class="active">Framework</a>
+        <a href="coaching-rubric.html">Rubric <span class="arrow">→</span></a>
+      </nav>
     </div>
   </div>
 
