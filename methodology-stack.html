@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Methodology Stack · Where Dunford Fits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0c09;
+    --bg-elev: #171310;
+    --bg-card: #1c1714;
+    --ink: #f3ecde;
+    --ink-muted: #968b7b;
+    --ink-faint: #5a5247;
+    --accent: #d4a356;
+    --accent-bright: #f0c274;
+    --accent-dim: #6b5029;
+    --line: #2a231d;
+    --line-bright: #3d332a;
+
+    /* Methodology colors */
+    --dunford: #d4a356;      /* amber - foundation */
+    --challenger: #7ba6c4;   /* cool blue */
+    --sandler: #8aa373;      /* sage green */
+    --meddic: #b57268;       /* burgundy */
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Instrument Sans', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    font-weight: 400;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 0%, rgba(212,163,86,0.06), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(123,166,196,0.04), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: overlay;
+  }
+
+  main { position: relative; z-index: 2; }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  /* --- Top Bar --- */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    background: rgba(14,12,9,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 100;
+  }
+  .topbar-inner { display: flex; justify-content: space-between; align-items: center; }
+  .logo {
+    font-family: 'Instrument Serif', serif;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+  }
+  .logo em { color: var(--accent); font-style: italic; }
+  .topbar-nav {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .topbar-nav a {
+    color: var(--ink-faint);
+    text-decoration: none;
+    padding: 6px 0;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .topbar-nav a:hover { color: var(--ink); }
+  .topbar-nav a.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  @media (max-width: 640px) {
+    .topbar-nav { gap: 14px; font-size: 10px; letter-spacing: 0.1em; }
+  }
+
+  /* --- Hero --- */
+  .hero {
+    padding: 110px 0 80px;
+    border-bottom: 1px solid var(--line);
+  }
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .hero h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(52px, 8.5vw, 112px);
+    line-height: 0.96;
+    letter-spacing: -0.025em;
+    font-weight: 400;
+    max-width: 14ch;
+    margin-bottom: 36px;
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero-lede {
+    font-size: 20px;
+    line-height: 1.55;
+    color: var(--ink-muted);
+    max-width: 60ch;
+  }
+
+  .pull-quote {
+    margin-top: 64px;
+    padding: 40px 48px;
+    border-left: 2px solid var(--accent);
+    background: linear-gradient(90deg, rgba(212,163,86,0.06), transparent 70%);
+    font-family: 'Instrument Serif', serif;
+    font-size: 28px;
+    line-height: 1.3;
+    font-style: italic;
+    max-width: 72ch;
+    letter-spacing: -0.01em;
+  }
+  .pull-quote strong {
+    font-style: normal;
+    font-weight: 400;
+    color: var(--accent);
+  }
+
+  /* --- Section Head --- */
+  .section-head {
+    padding: 100px 0 60px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 60px;
+    align-items: end;
+  }
+  .section-head .num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 110px;
+    line-height: 1;
+    color: var(--accent-dim);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .section-head h2 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 54px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+  .section-head h2 em { color: var(--accent); font-style: italic; }
+  .section-head p {
+    color: var(--ink-muted);
+    max-width: 52ch;
+    margin-top: 20px;
+    font-size: 16px;
+  }
+
+  /* --- The Stack Visualization --- */
+  .stack-viz {
+    padding-bottom: 100px;
+  }
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .stack-layer {
+    padding: 32px 40px;
+    display: grid;
+    grid-template-columns: 140px 1fr 1fr;
+    gap: 32px;
+    align-items: center;
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+    position: relative;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .stack-layer:hover {
+    transform: translateX(4px);
+    border-color: var(--c);
+  }
+  .stack-layer::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--c);
+  }
+  .stack-layer[data-m="meddic"] { --c: var(--meddic); margin-left: 72px; }
+  .stack-layer[data-m="sandler"] { --c: var(--sandler); margin-left: 48px; }
+  .stack-layer[data-m="challenger"] { --c: var(--challenger); margin-left: 24px; }
+  .stack-layer[data-m="dunford"] { --c: var(--dunford); }
+
+  .stack-layer-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c);
+    font-weight: 600;
+  }
+  .stack-layer-tag small {
+    display: block;
+    color: var(--ink-faint);
+    font-size: 10px;
+    margin-top: 4px;
+    letter-spacing: 0.08em;
+  }
+  .stack-layer-name {
+    font-family: 'Instrument Serif', serif;
+    font-size: 32px;
+    line-height: 1.05;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+  }
+  .stack-layer-name em { color: var(--c); font-style: italic; }
+  .stack-layer-role {
+    color: var(--ink-muted);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .stack-layer-role strong {
+    color: var(--c);
+    font-weight: 500;
+  }
+
+  .stack-foundation-label {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+  }
+
+  .stack-insight {
+    max-width: 820px;
+    margin: 60px auto 0;
+    padding: 32px 40px;
+    background: var(--bg-elev);
+    border-left: 2px solid var(--accent);
+  }
+  .stack-insight-label {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .stack-insight-text {
+    font-family: 'Instrument Serif', serif;
+    font-size: 24px;
+    line-height: 1.3;
+    font-style: italic;
+    letter-spacing: -0.01em;
+  }
+  .stack-insight-text strong {
+    font-style: normal;
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  /* --- In One Line / Role Summary --- */
+  .oneliner-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .oneliner {
+    padding: 28px 24px;
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+    position: relative;
+    transition: border-color 0.3s;
+  }
+  .oneliner:hover { border-color: var(--c); }
+  .oneliner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--c);
+  }
+  .oneliner[data-m="dunford"] { --c: var(--dunford); }
+  .oneliner[data-m="challenger"] { --c: var(--challenger); }
+  .oneliner[data-m="sandler"] { --c: var(--sandler); }
+  .oneliner[data-m="meddic"] { --c: var(--meddic); }
+
+  .oneliner-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .oneliner h4 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 28px;
+    line-height: 1.1;
+    font-weight: 400;
+    margin-bottom: 16px;
+    letter-spacing: -0.015em;
+  }
+  .oneliner p {
+    color: var(--ink-muted);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .oneliner p em {
+    color: var(--c);
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  /* --- Direct Comparison Cards --- */
+  .compare-section { padding-bottom: 60px; }
+  .compare {
+    padding: 56px 0;
+    border-top: 1px solid var(--line);
+  }
+  .compare:last-child { border-bottom: 1px solid var(--line); }
+  .compare-header {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .compare-vs {
+    font-family: 'Instrument Serif', serif;
+    font-size: 44px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+  .compare-vs .a { color: var(--dunford); font-style: italic; }
+  .compare-vs .vs {
+    color: var(--ink-faint);
+    font-size: 24px;
+    margin: 0 10px;
+    font-style: italic;
+  }
+  .compare-vs .b { font-style: italic; color: var(--c-other); }
+  .compare[data-v="challenger"] { --c-other: var(--challenger); }
+  .compare[data-v="sandler"] { --c-other: var(--sandler); }
+  .compare[data-v="meddic"] { --c-other: var(--meddic); }
+
+  .compare-caption {
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+    margin-bottom: 36px;
+    max-width: 60ch;
+    line-height: 1.55;
+  }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+  }
+  .compare-side {
+    padding: 28px 32px;
+  }
+  .compare-side + .compare-side {
+    border-left: 1px solid var(--line);
+  }
+  .compare-side-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--c);
+  }
+  .compare-side[data-c="dunford"] { --c: var(--dunford); }
+  .compare-side[data-c="challenger"] { --c: var(--challenger); }
+  .compare-side[data-c="sandler"] { --c: var(--sandler); }
+  .compare-side[data-c="meddic"] { --c: var(--meddic); }
+  .compare-side p {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .compare-side p + p { margin-top: 10px; color: var(--ink-muted); }
+
+  .compare-example {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .example-line {
+    padding: 22px 24px;
+    border: 1px solid var(--line);
+    position: relative;
+  }
+  .example-line[data-kind="without"] {
+    background: transparent;
+  }
+  .example-line[data-kind="with"] {
+    background: rgba(212,163,86,0.04);
+    border-color: rgba(212,163,86,0.3);
+  }
+  .example-kind {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .example-line[data-kind="with"] .example-kind { color: var(--accent); }
+  .example-quote {
+    font-family: 'Instrument Serif', serif;
+    font-size: 18px;
+    line-height: 1.35;
+    font-style: italic;
+    color: var(--ink);
+  }
+  .compare-takeaway {
+    margin-top: 24px;
+    font-family: 'Instrument Serif', serif;
+    font-size: 20px;
+    line-height: 1.3;
+    font-style: italic;
+    color: var(--ink);
+    padding-left: 20px;
+    border-left: 2px solid var(--c-other);
+  }
+  .compare-takeaway strong {
+    font-style: normal;
+    font-weight: 500;
+    color: var(--c-other);
+  }
+
+  /* --- Skills By Methodology --- */
+  .skills-section {
+    padding-bottom: 100px;
+  }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .skill-block {
+    padding: 36px;
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+    position: relative;
+    transition: border-color 0.3s;
+  }
+  .skill-block:hover { border-color: var(--c); }
+  .skill-block::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--c);
+  }
+  .skill-block[data-m="dunford"] { --c: var(--dunford); }
+  .skill-block[data-m="challenger"] { --c: var(--challenger); }
+  .skill-block[data-m="sandler"] { --c: var(--sandler); }
+  .skill-block[data-m="meddic"] { --c: var(--meddic); }
+
+  .skill-block-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .skill-block h4 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 32px;
+    line-height: 1.1;
+    font-weight: 400;
+    margin-bottom: 8px;
+    letter-spacing: -0.015em;
+  }
+  .skill-block-core {
+    font-family: 'Instrument Serif', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--c);
+    margin-bottom: 24px;
+  }
+  .skill-block ul {
+    list-style: none;
+    margin-top: 8px;
+  }
+  .skill-block ul li {
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+    line-height: 1.5;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 14px;
+    align-items: baseline;
+  }
+  .skill-block ul li strong {
+    color: var(--ink);
+    font-weight: 500;
+    min-width: 140px;
+    font-size: 14px;
+  }
+  .skill-block ul li span {
+    color: var(--ink-muted);
+  }
+  .skill-block-note {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--c);
+    font-style: italic;
+    font-family: 'Instrument Serif', serif;
+  }
+
+  /* --- What Great Looks Like --- */
+  .great {
+    padding: 100px 0;
+    border-top: 1px solid var(--line);
+    background: linear-gradient(180deg, transparent, rgba(212,163,86,0.02));
+  }
+  .great-sub {
+    font-size: 16px;
+    color: var(--ink-muted);
+    max-width: 60ch;
+    margin-top: 20px;
+  }
+  .great-flow {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-left: 1px solid var(--line);
+    padding-left: 40px;
+    position: relative;
+  }
+  .great-step {
+    padding: 32px 0;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 40px;
+    position: relative;
+  }
+  .great-step:last-child { border-bottom: none; }
+  .great-step::before {
+    content: '';
+    position: absolute;
+    left: -46px;
+    top: 44px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--c);
+    border: 2px solid var(--bg);
+  }
+  .great-step[data-m="dunford"] { --c: var(--dunford); }
+  .great-step[data-m="challenger"] { --c: var(--challenger); }
+  .great-step[data-m="sandler"] { --c: var(--sandler); }
+  .great-step[data-m="meddic"] { --c: var(--meddic); }
+
+  .great-step-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c);
+    font-weight: 600;
+    padding-top: 4px;
+  }
+  .great-step-label strong {
+    font-family: 'Instrument Sans', sans-serif;
+    display: block;
+    font-size: 10px;
+    color: var(--ink-faint);
+    margin-top: 6px;
+    letter-spacing: 0.14em;
+  }
+  .great-step-quote {
+    font-family: 'Instrument Serif', serif;
+    font-size: 26px;
+    line-height: 1.3;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  /* --- Samdesk Takeaway --- */
+  .takeaway {
+    padding: 100px 0;
+    border-top: 1px solid var(--line);
+  }
+  .takeaway-block {
+    padding: 64px 56px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line-bright);
+    position: relative;
+    overflow: hidden;
+  }
+  .takeaway-block::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 50%;
+    background: radial-gradient(ellipse at right, rgba(212,163,86,0.15), transparent 70%);
+    pointer-events: none;
+  }
+  .takeaway-content { position: relative; z-index: 2; max-width: 780px; }
+  .takeaway-label {
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+  .takeaway h3 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 48px;
+    line-height: 1.08;
+    font-weight: 400;
+    margin-bottom: 28px;
+    letter-spacing: -0.02em;
+  }
+  .takeaway h3 em { color: var(--accent); font-style: italic; }
+  .takeaway p {
+    color: var(--ink-muted);
+    font-size: 17px;
+    line-height: 1.6;
+    max-width: 62ch;
+  }
+  .takeaway p + p { margin-top: 16px; }
+  .takeaway p strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .takeaway-moves {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .takeaway-move {
+    padding: 20px 24px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .takeaway-move-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .takeaway-move-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 20px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    font-weight: 400;
+  }
+  .takeaway-move-title em { color: var(--accent); font-style: italic; }
+  .takeaway-move-desc {
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+  }
+
+  /* --- Closing --- */
+  .closing {
+    padding: 120px 0;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+  .closing-quote {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(32px, 4.5vw, 56px);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    max-width: 26ch;
+    margin: 0 auto 24px;
+  }
+  .closing-quote em { color: var(--accent); font-style: italic; }
+  .closing-attrib {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+  }
+
+  /* --- Footer --- */
+  .footer {
+    border-top: 1px solid var(--line);
+    padding: 40px 0;
+    font-size: 13px;
+    color: var(--ink-faint);
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* --- Animations --- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero h1, .hero-lede, .pull-quote {
+    animation: fadeUp 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .hero-lede { animation-delay: 0.1s; }
+  .pull-quote { animation-delay: 0.2s; }
+
+  /* --- Responsive --- */
+  @media (max-width: 960px) {
+    .container { padding: 0 24px; }
+    .section-head { grid-template-columns: 1fr; gap: 16px; }
+    .section-head .num { font-size: 72px; }
+    .oneliner-grid { grid-template-columns: 1fr 1fr; }
+    .stack-layer {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-left: 0 !important;
+    }
+    .compare-grid { grid-template-columns: 1fr; }
+    .compare-side + .compare-side { border-left: none; border-top: 1px solid var(--line); }
+    .compare-example { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .skill-block ul li { grid-template-columns: 1fr; gap: 4px; }
+    .great-step { grid-template-columns: 1fr; gap: 12px; }
+    .takeaway-block { padding: 40px 28px; }
+    .takeaway-moves { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo">The Methodology <em>Stack</em></div>
+      <nav class="topbar-nav">
+        <a href="index.html">Framework</a>
+        <a href="coaching-rubric.html">Rubric</a>
+        <a href="methodology-stack.html" class="active">Stack</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="eyebrow">Dunford vs. MEDDIC, Challenger, Sandler</div>
+      <h1>It's not one of four. <em>It's the foundation</em> under the other three.</h1>
+      <p class="hero-lede">
+        Most organizations try to pick a sales methodology. That's the mistake.
+        Dunford-style positioning isn't a peer to MEDDIC, Challenger, or Sandler —
+        it sits underneath them. When positioning is weak, every downstream
+        methodology becomes generic. When it's strong, they all become sharper.
+      </p>
+      <div class="pull-quote">
+        <strong>April = what story you tell.</strong> Challenger = how you deliver it.
+        Sandler = how you manage the conversation. MEDDIC = whether the deal holds up.
+      </div>
+    </div>
+  </section>
+
+  <!-- ROLE SUMMARY -->
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <div class="num">01</div>
+        <div>
+          <h2>Four methodologies, <em>four jobs</em>.</h2>
+          <p>
+            Each solves a different layer of the problem. Knowing which layer
+            is which keeps you from confusing a positioning problem for a
+            qualification problem — a mistake that wastes coaching cycles.
+          </p>
+        </div>
+      </div>
+
+      <div class="oneliner-grid">
+        <div class="oneliner" data-m="dunford">
+          <div class="oneliner-tag">Layer 01 · Story</div>
+          <h4>Dunford</h4>
+          <p>Define <em>how the product should be understood</em>. Frame the problem, category, and differentiation so buyers get it quickly and correctly.</p>
+        </div>
+        <div class="oneliner" data-m="challenger">
+          <div class="oneliner-tag">Layer 02 · Delivery</div>
+          <h4>Challenger</h4>
+          <p>Change <em>how the buyer thinks</em> about their problem. Teach something non-obvious, create constructive tension.</p>
+        </div>
+        <div class="oneliner" data-m="sandler">
+          <div class="oneliner-tag">Layer 03 · Control</div>
+          <h4>Sandler</h4>
+          <p>Control the <em>interaction and qualification</em> process. Set boundaries, disqualify ruthlessly, don't chase.</p>
+        </div>
+        <div class="oneliner" data-m="meddic">
+          <div class="oneliner-tag">Layer 04 · Close</div>
+          <h4>MEDDIC</h4>
+          <p>Validate whether the <em>deal is real and winnable</em>. Know where it stands, anticipate risk, build internal alignment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE STACK VISUAL -->
+  <section class="stack-viz">
+    <div class="container">
+      <div class="section-head">
+        <div class="num">02</div>
+        <div>
+          <h2>The stack, <em>read bottom-up</em>.</h2>
+          <p>
+            Positioning is upstream of everything else. If the story is wrong,
+            the rest of the stack inherits the weakness. This isn't a philosophical
+            claim — it shows up materially in how each downstream methodology performs.
+          </p>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="stack-layer" data-m="meddic">
+          <div class="stack-layer-tag">04 · MEDDIC<small>Close</small></div>
+          <div class="stack-layer-name"><em>Validate</em> the deal.</div>
+          <div class="stack-layer-role">Without Dunford, MEDDIC metrics feel generic — <strong>"save time"</strong>, <strong>"improve efficiency."</strong> With Dunford, metrics become meaningful — tied to a specific category claim the buyer believes.</div>
+        </div>
+        <div class="stack-layer" data-m="sandler">
+          <div class="stack-layer-tag">03 · Sandler<small>Control</small></div>
+          <div class="stack-layer-name"><em>Manage</em> the conversation.</div>
+          <div class="stack-layer-role">Without Dunford, Sandler discovery stays at surface pain — <strong>"too many alerts."</strong> With Dunford, pain becomes strategic and tied to a named alternative.</div>
+        </div>
+        <div class="stack-layer" data-m="challenger">
+          <div class="stack-layer-tag">02 · Challenger<small>Delivery</small></div>
+          <div class="stack-layer-name"><em>Reframe</em> the buyer's thinking.</div>
+          <div class="stack-layer-role">Without Dunford, Challenger insight is generic — <strong>"AI is changing everything."</strong> With Dunford, insight is specific — tied to a pointed claim about the category.</div>
+        </div>
+        <div class="stack-layer" data-m="dunford">
+          <div class="stack-layer-tag">01 · Dunford<small>Story · Foundation</small></div>
+          <div class="stack-layer-name"><em>Define</em> the story.</div>
+          <div class="stack-layer-role">Positions the problem, category, and differentiation. Provides <strong>the content</strong> that Challenger delivers, the <strong>depth</strong> that Sandler qualifies, and the <strong>language</strong> that MEDDIC measures.</div>
+        </div>
+      </div>
+
+      <div class="stack-foundation-label">↑ Each layer inherits from the one below ↑</div>
+
+      <div class="stack-insight">
+        <div class="stack-insight-label">The Key Insight</div>
+        <div class="stack-insight-text">
+          April doesn't <strong>replace</strong> the others. She <strong>powers</strong> them.
+          A team strong in positioning gets more leverage out of every other methodology they run.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIRECT COMPARISONS -->
+  <section class="compare-section">
+    <div class="container">
+      <div class="section-head">
+        <div class="num">03</div>
+        <div>
+          <h2>What changes <em>with</em> Dunford in place.</h2>
+          <p>
+            The easiest way to see the foundation effect is side-by-side. Same methodology,
+            same rep, same conversation — but with and without strong positioning underneath.
+          </p>
+        </div>
+      </div>
+
+      <!-- DUNFORD vs CHALLENGER -->
+      <div class="compare" data-v="challenger">
+        <div class="compare-header">
+          <div class="compare-vs">
+            <span class="a">Dunford</span><span class="vs">vs.</span><span class="b">Challenger</span>
+          </div>
+        </div>
+        <p class="compare-caption">Dunford provides the content. Challenger provides the delivery. Both are required; they are not substitutes.</p>
+
+        <div class="compare-grid">
+          <div class="compare-side" data-c="dunford">
+            <div class="compare-side-label">Dunford says</div>
+            <p>Here's what you should teach them.</p>
+            <p>Positioning defines the specific, differentiated insight worth delivering.</p>
+          </div>
+          <div class="compare-side" data-c="challenger">
+            <div class="compare-side-label">Challenger says</div>
+            <p>Teach the customer something new.</p>
+            <p>The method is sound. But it's a vessel — it needs content to carry.</p>
+          </div>
+        </div>
+
+        <div class="compare-example">
+          <div class="example-line" data-kind="without">
+            <div class="example-kind">Without Dunford</div>
+            <div class="example-quote">"AI is changing everything in crisis management…"</div>
+          </div>
+          <div class="example-line" data-kind="with">
+            <div class="example-kind">With Dunford</div>
+            <div class="example-quote">"You're not struggling with alerts — you're struggling with decision-making in the messy middle."</div>
+          </div>
+        </div>
+
+        <div class="compare-takeaway">
+          <strong>Dunford = content. Challenger = delivery.</strong> Without the first, the second sounds like every other vendor.
+        </div>
+      </div>
+
+      <!-- DUNFORD vs SANDLER -->
+      <div class="compare" data-v="sandler">
+        <div class="compare-header">
+          <div class="compare-vs">
+            <span class="a">Dunford</span><span class="vs">vs.</span><span class="b">Sandler</span>
+          </div>
+        </div>
+        <p class="compare-caption">Dunford sharpens Sandler's discovery depth by defining what "pain" actually means in the category.</p>
+
+        <div class="compare-grid">
+          <div class="compare-side" data-c="dunford">
+            <div class="compare-side-label">Dunford defines</div>
+            <p>What pain actually means in your category, why it matters now, and what alternative approaches exist.</p>
+          </div>
+          <div class="compare-side" data-c="sandler">
+            <div class="compare-side-label">Sandler focuses on</div>
+            <p>Pain, budget, decision. Without a sharpened definition of pain, Sandler discovery stays at surface level.</p>
+          </div>
+        </div>
+
+        <div class="compare-example">
+          <div class="example-line" data-kind="without">
+            <div class="example-kind">Without Dunford</div>
+            <div class="example-quote">Pain = "too many alerts"</div>
+          </div>
+          <div class="example-line" data-kind="with">
+            <div class="example-kind">With Dunford</div>
+            <div class="example-quote">Pain = "making decisions without verified context, creating risk exposure at the executive level."</div>
+          </div>
+        </div>
+
+        <div class="compare-takeaway">
+          <strong>Dunford sharpens Sandler's discovery depth.</strong> Pain is only useful if it's specific enough to act on.
+        </div>
+      </div>
+
+      <!-- DUNFORD vs MEDDIC -->
+      <div class="compare" data-v="meddic">
+        <div class="compare-header">
+          <div class="compare-vs">
+            <span class="a">Dunford</span><span class="vs">vs.</span><span class="b">MEDDIC</span>
+          </div>
+        </div>
+        <p class="compare-caption">Dunford gives MEDDIC the narrative that makes metrics believable and the context for why you win.</p>
+
+        <div class="compare-grid">
+          <div class="compare-side" data-c="dunford">
+            <div class="compare-side-label">Dunford provides</div>
+            <p>The value narrative that makes metrics believable. The context for why you win vs. named alternatives.</p>
+          </div>
+          <div class="compare-side" data-c="meddic">
+            <div class="compare-side-label">MEDDIC needs</div>
+            <p>Metrics, economic impact, clear differentiation. Without a narrative, the metrics read as generic ROI math.</p>
+          </div>
+        </div>
+
+        <div class="compare-example">
+          <div class="example-line" data-kind="without">
+            <div class="example-kind">Without Dunford</div>
+            <div class="example-quote">"Save time on alert triage."</div>
+          </div>
+          <div class="example-line" data-kind="with">
+            <div class="example-kind">With Dunford</div>
+            <div class="example-quote">"Reduce time-to-decision under uncertainty. Avoid escalation risk before full information is available."</div>
+          </div>
+        </div>
+
+        <div class="compare-takeaway">
+          <strong>Dunford gives MEDDIC teeth.</strong> Metrics without a narrative are generic. Metrics inside a narrative are decisive.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS BY METHODOLOGY -->
+  <section class="skills-section">
+    <div class="container">
+      <div class="section-head">
+        <div class="num">04</div>
+        <div>
+          <h2>The skills <em>each methodology demands</em>.</h2>
+          <p>
+            Four different core skills, four different coaching arcs. A team that's
+            strong on one methodology isn't automatically strong on another — they
+            require distinct capabilities built through distinct reps.
+          </p>
+        </div>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-block" data-m="dunford">
+          <div class="skill-block-label">Layer 01 · Story</div>
+          <h4>Dunford</h4>
+          <div class="skill-block-core">Core skill: Strategic narrative thinking</div>
+          <ul>
+            <li><strong>Problem framing</strong><span>Turning vague pain into clear, named problems.</span></li>
+            <li><strong>Category creation</strong><span>"This isn't alerting vs. alerting — it's alerting vs. decision platforms."</span></li>
+            <li><strong>Differentiation</strong><span>Explaining why you're different in a way that matters.</span></li>
+            <li><strong>Story compression</strong><span>Complex value articulated in 30–60 seconds.</span></li>
+          </ul>
+          <div class="skill-block-note">Rare skill. Most reps struggle here.</div>
+        </div>
+
+        <div class="skill-block" data-m="challenger">
+          <div class="skill-block-label">Layer 02 · Delivery</div>
+          <h4>Challenger</h4>
+          <div class="skill-block-core">Core skill: Insight delivery with authority</div>
+          <ul>
+            <li><strong>Commercial insight</strong><span>Bringing non-obvious, valuable perspective.</span></li>
+            <li><strong>Reframing</strong><span>Shifting how the buyer sees their problem.</span></li>
+            <li><strong>Constructive tension</strong><span>Challenging assumptions without abrasion.</span></li>
+            <li><strong>Executive communication</strong><span>Speaking in outcomes, not features.</span></li>
+          </ul>
+          <div class="skill-block-note">Hard skill — requires confidence and credibility.</div>
+        </div>
+
+        <div class="skill-block" data-m="sandler">
+          <div class="skill-block-label">Layer 03 · Control</div>
+          <h4>Sandler</h4>
+          <div class="skill-block-core">Core skill: Conversational control and qualification</div>
+          <ul>
+            <li><strong>Deep questioning</strong><span>Getting beyond surface pain.</span></li>
+            <li><strong>Active listening</strong><span>Picking up nuance and signals.</span></li>
+            <li><strong>Boundary setting</strong><span>Not over-serving or over-selling.</span></li>
+            <li><strong>Disqualification</strong><span>Walking away from bad deals.</span></li>
+          </ul>
+          <div class="skill-block-note">Hard skill — requires emotional discipline.</div>
+        </div>
+
+        <div class="skill-block" data-m="meddic">
+          <div class="skill-block-label">Layer 04 · Close</div>
+          <h4>MEDDIC</h4>
+          <div class="skill-block-core">Core skill: Deal engineering and navigation</div>
+          <ul>
+            <li><strong>Stakeholder mapping</strong><span>Identifying power vs. influence.</span></li>
+            <li><strong>Champion building</strong><span>Turning users into internal sellers.</span></li>
+            <li><strong>Process navigation</strong><span>Procurement and approvals fluency.</span></li>
+            <li><strong>Value quantification</strong><span>Translating solution into business impact.</span></li>
+          </ul>
+          <div class="skill-block-note">Hard skill — requires organizational intelligence.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT GREAT LOOKS LIKE -->
+  <section class="great">
+    <div class="container">
+      <div class="section-head">
+        <div class="num">05</div>
+        <div>
+          <h2>What <em>great</em> looks like, combined.</h2>
+          <p>
+            A top-tier enterprise rep runs all four methodologies in a single
+            conversation — usually without naming them. Each comes out of a
+            different moment, in a different voice, doing different work.
+          </p>
+        </div>
+      </div>
+
+      <div class="great-flow">
+        <div class="great-step" data-m="dunford">
+          <div class="great-step-label">Dunford<strong>To frame</strong></div>
+          <div class="great-step-quote">"You don't have an alerting problem. You have a <em>decision</em> problem."</div>
+        </div>
+        <div class="great-step" data-m="challenger">
+          <div class="great-step-label">Challenger<strong>To push</strong></div>
+          <div class="great-step-quote">"Most teams don't realize how much time they lose in the investigation gap."</div>
+        </div>
+        <div class="great-step" data-m="sandler">
+          <div class="great-step-label">Sandler<strong>To qualify</strong></div>
+          <div class="great-step-quote">"If this isn't a priority this quarter, we probably shouldn't continue."</div>
+        </div>
+        <div class="great-step" data-m="meddic">
+          <div class="great-step-label">MEDDIC<strong>To close</strong></div>
+          <div class="great-step-quote">"Who ultimately signs off — and how do we align this to their priorities?"</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAMDESK TAKEAWAY -->
+  <section class="takeaway">
+    <div class="container">
+      <div class="takeaway-block">
+        <div class="takeaway-content">
+          <div class="takeaway-label">The samdesk Read</div>
+          <h3>Strong in Dunford. <em>Upside</em> in Challenger and MEDDIC.</h3>
+          <p>
+            Your team is already strong in April-style thinking. The positioning
+            instinct is there — decision platform vs. alerting, verified context
+            vs. raw signal, the strategic frame lands when reps deploy it.
+          </p>
+          <p>
+            The biggest upside is <strong>operationalizing that positioning through
+            Challenger + MEDDIC in the field</strong>. Reps have the story. What
+            varies is whether they deliver it with authority (Challenger) and
+            whether it translates into a deal structure that holds up under
+            procurement pressure (MEDDIC).
+          </p>
+
+          <div class="takeaway-moves">
+            <div class="takeaway-move">
+              <div class="takeaway-move-num">NEXT · 01</div>
+              <div class="takeaway-move-title">Drill <em>Challenger delivery</em>.</div>
+              <div class="takeaway-move-desc">The Dunford content exists. Coach the tension and reframing patterns that make it land in the first 5 minutes of a call.</div>
+            </div>
+            <div class="takeaway-move">
+              <div class="takeaway-move-num">NEXT · 02</div>
+              <div class="takeaway-move-title">Tighten <em>MEDDIC rigor</em>.</div>
+              <div class="takeaway-move-desc">Translate the positioning into metrics, champions, and decision criteria that hold up when the deal moves to procurement and legal.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section class="closing">
+    <div class="container">
+      <p class="closing-quote">
+        Pick one and you're playing short. <br>Stack all four and <em>you're compounding</em>.
+      </p>
+      <div class="closing-attrib">— The Stack, in a Line</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>The Methodology Stack · samdesk sales enablement</span>
+      <span>Dunford · Challenger · Sandler · MEDDIC</span>
+    </div>
+  </footer>
+
+</main>
+</body>
+</html>
