@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Discovery Framework · Dunford-Aligned Coaching Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0c09;
+    --bg-elev: #171310;
+    --bg-card: #1c1714;
+    --ink: #f3ecde;
+    --ink-muted: #968b7b;
+    --ink-faint: #5a5247;
+    --accent: #d4a356;
+    --accent-bright: #f0c274;
+    --accent-dim: #6b5029;
+    --line: #2a231d;
+    --line-bright: #3d332a;
+    --danger: #c97a5a;
+    --success: #8aa373;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Instrument Sans', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    font-weight: 400;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Subtle background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 0%, rgba(212,163,86,0.06), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(212,163,86,0.04), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: overlay;
+  }
+
+  main { position: relative; z-index: 2; }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  /* --- Top Bar --- */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    background: rgba(14,12,9,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 100;
+  }
+  .topbar-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo {
+    font-family: 'Instrument Serif', serif;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+  }
+  .logo em {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .topbar-meta {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    font-weight: 500;
+  }
+
+  /* --- Hero --- */
+  .hero {
+    padding: 120px 0 80px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .hero h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(56px, 9vw, 128px);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    font-weight: 400;
+    max-width: 14ch;
+    margin-bottom: 40px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-lede {
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink-muted);
+    max-width: 58ch;
+    font-weight: 400;
+  }
+
+  .principle {
+    margin-top: 80px;
+    padding: 48px 56px;
+    border-left: 2px solid var(--accent);
+    background: linear-gradient(90deg, rgba(212,163,86,0.06), transparent 70%);
+  }
+  .principle-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .principle-text {
+    font-family: 'Instrument Serif', serif;
+    font-size: 36px;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    font-style: italic;
+  }
+  .principle-text strong {
+    font-style: normal;
+    font-weight: 400;
+    color: var(--accent);
+  }
+
+  /* --- Section Headers --- */
+  .section-head {
+    padding: 100px 0 60px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 60px;
+    align-items: end;
+  }
+  .section-head .num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 110px;
+    line-height: 1;
+    color: var(--accent-dim);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .section-head h2 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 56px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+  .section-head h2 em {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .section-head p {
+    color: var(--ink-muted);
+    max-width: 50ch;
+    margin-top: 20px;
+    font-size: 16px;
+  }
+
+  /* --- Discovery Flow --- */
+  .flow-section { padding-bottom: 80px; }
+  .flow-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .flow-nav {
+    position: sticky;
+    top: 100px;
+    padding: 0;
+  }
+  .flow-nav-title {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .flow-nav-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .flow-nav-item {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 12px 0;
+    color: var(--ink-muted);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    border-bottom: 1px solid transparent;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .flow-nav-item:hover {
+    color: var(--ink);
+  }
+  .flow-nav-item.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .flow-nav-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-faint);
+    font-weight: 400;
+    letter-spacing: 0;
+    min-width: 24px;
+  }
+  .flow-nav-item.active .flow-nav-num { color: var(--accent); }
+
+  .stages { display: flex; flex-direction: column; gap: 0; }
+  .stage {
+    padding: 56px 0;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 100px;
+  }
+  .stage:first-child { padding-top: 0; }
+  .stage:last-of-type { border-bottom: none; }
+
+  .stage-header {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  .stage-num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 72px;
+    line-height: 1;
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .stage-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 44px;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    font-weight: 400;
+    flex: 1;
+  }
+  .stage-subtitle {
+    font-size: 17px;
+    color: var(--ink-muted);
+    margin-bottom: 32px;
+    font-style: italic;
+    font-family: 'Instrument Serif', serif;
+  }
+  .stage-goal {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(212,163,86,0.08);
+    border: 1px solid rgba(212,163,86,0.2);
+    border-radius: 2px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 28px;
+  }
+  .stage-goal strong { color: var(--accent-bright); }
+
+  .example {
+    background: var(--bg-elev);
+    border-left: 2px solid var(--accent);
+    padding: 28px 32px;
+    margin: 28px 0;
+    position: relative;
+  }
+  .example-label {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .example-quote {
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px;
+    line-height: 1.4;
+    font-style: italic;
+    color: var(--ink);
+  }
+  .example-quote + .example-quote { margin-top: 14px; }
+
+  .stage-list {
+    list-style: none;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 32px;
+  }
+  .stage-list li {
+    padding: 10px 0 10px 24px;
+    position: relative;
+    color: var(--ink);
+    font-size: 15px;
+    border-top: 1px solid var(--line);
+  }
+  .stage-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    color: var(--accent);
+  }
+
+  /* --- Bridge --- */
+  .bridge {
+    margin-top: 80px;
+    padding: 64px 56px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line-bright);
+    position: relative;
+    overflow: hidden;
+  }
+  .bridge::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 40%;
+    background: radial-gradient(ellipse at right, rgba(212,163,86,0.15), transparent 70%);
+    pointer-events: none;
+  }
+  .bridge-content { position: relative; z-index: 2; max-width: 720px; }
+  .bridge-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .bridge h3 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 44px;
+    line-height: 1.1;
+    font-weight: 400;
+    margin-bottom: 20px;
+    letter-spacing: -0.015em;
+  }
+  .bridge p {
+    color: var(--ink-muted);
+    font-size: 17px;
+    max-width: 55ch;
+  }
+  .bridge .example {
+    margin-top: 28px;
+    background: var(--bg);
+  }
+
+  /* --- Best Practices --- */
+  .practices { padding-bottom: 100px; }
+  .practices-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+  .practice {
+    padding: 40px 36px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+    transition: background 0.3s;
+    position: relative;
+  }
+  .practice:hover {
+    background: var(--bg-elev);
+  }
+  .practice-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-bottom: 14px;
+    letter-spacing: 0.05em;
+  }
+  .practice-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 26px;
+    line-height: 1.15;
+    font-weight: 400;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .practice-title em {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .practice-desc {
+    color: var(--ink-muted);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .practice-pointer {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+    color: var(--accent);
+    font-style: italic;
+    font-family: 'Instrument Serif', serif;
+  }
+
+  /* --- Cheat Sheet --- */
+  .cheat {
+    padding: 100px 0;
+    border-top: 1px solid var(--line);
+    background:
+      linear-gradient(180deg, transparent, rgba(212,163,86,0.03));
+  }
+  .cheat-inner {
+    max-width: 980px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .cheat-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+  .cheat h2 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 56px;
+    line-height: 1.05;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .cheat h2 em { color: var(--accent); font-style: italic; }
+  .cheat-sub {
+    color: var(--ink-muted);
+    max-width: 52ch;
+    margin: 0 auto 56px;
+    font-size: 16px;
+  }
+  .cheat-list {
+    list-style: none;
+    counter-reset: cheat;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-top: 40px;
+  }
+  .cheat-list li {
+    counter-increment: cheat;
+    padding: 24px 16px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    text-align: center;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+  }
+  .cheat-list li:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .cheat-list li::before {
+    content: counter(cheat, decimal-leading-zero);
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    margin-bottom: 12px;
+    letter-spacing: 0.1em;
+  }
+  .cheat-list li span {
+    font-family: 'Instrument Serif', serif;
+    font-size: 17px;
+    line-height: 1.15;
+    display: block;
+  }
+
+  /* --- Closing --- */
+  .closing {
+    padding: 140px 0;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+  .closing-quote {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    max-width: 22ch;
+    margin: 0 auto 32px;
+  }
+  .closing-quote em { color: var(--accent); font-style: italic; }
+  .closing-attrib {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+  }
+
+  /* --- Footer --- */
+  .footer {
+    border-top: 1px solid var(--line);
+    padding: 40px 0;
+    font-size: 13px;
+    color: var(--ink-faint);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* --- Animations --- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero h1, .hero-lede, .principle {
+    animation: fadeUp 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .hero-lede { animation-delay: 0.1s; }
+  .principle { animation-delay: 0.2s; }
+
+  /* --- Responsive --- */
+  @media (max-width: 960px) {
+    .container { padding: 0 24px; }
+    .flow-grid { grid-template-columns: 1fr; gap: 32px; }
+    .flow-nav { position: static; }
+    .flow-nav-list { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+    .flow-nav-item { padding: 8px 14px; border: 1px solid var(--line); border-bottom-color: var(--line); }
+    .flow-nav-item.active { border-color: var(--accent); }
+    .section-head { grid-template-columns: 1fr; gap: 16px; }
+    .section-head .num { font-size: 72px; }
+    .practices-grid { grid-template-columns: 1fr; }
+    .cheat-list { grid-template-columns: repeat(2, 1fr); }
+    .stage-list { grid-template-columns: 1fr; }
+    .stage-header { flex-direction: column; gap: 8px; }
+    .bridge { padding: 40px 28px; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo">The Discovery <em>Framework</em></div>
+      <div class="topbar-meta">Dunford-Aligned · Coaching Guide</div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="eyebrow">Best-in-Class Sales Discovery</div>
+      <h1>Don't find the problem. <em>Reframe</em> it.</h1>
+      <p class="hero-lede">
+        A structured conversation that shapes how the buyer thinks — not just a list of questions.
+        Use this framework to lead discovery with a point of view, expose the limits of the
+        status quo, and make your solution the obvious next step.
+      </p>
+      <div class="principle">
+        <div class="principle-label">Core Principle</div>
+        <div class="principle-text">
+          Discovery isn't about finding problems. It's about helping the buyer
+          <strong>understand the right problem.</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DISCOVERY FLOW -->
+  <section class="flow-section">
+    <div class="container">
+      <div class="section-head">
+        <div class="num">01</div>
+        <div>
+          <h2>The six stages of <em>great discovery</em>.</h2>
+          <p>
+            A sequence — not a checklist. Each stage builds the next. Skipping forward
+            (especially to demo) is the single most common failure mode.
+          </p>
+        </div>
+      </div>
+
+      <div class="flow-grid">
+        <!-- Sticky stage nav -->
+        <aside class="flow-nav">
+          <div class="flow-nav-title">Stages</div>
+          <ul class="flow-nav-list" id="flowNav">
+            <li><a class="flow-nav-item" data-target="stage-1"><span class="flow-nav-num">01</span>Set the Context</a></li>
+            <li><a class="flow-nav-item" data-target="stage-2"><span class="flow-nav-num">02</span>Current Approach</a></li>
+            <li><a class="flow-nav-item" data-target="stage-3"><span class="flow-nav-num">03</span>Surface Friction</a></li>
+            <li><a class="flow-nav-item" data-target="stage-4"><span class="flow-nav-num">04</span>Impact & Consequences</a></li>
+            <li><a class="flow-nav-item" data-target="stage-5"><span class="flow-nav-num">05</span>Alternative Thinking</a></li>
+            <li><a class="flow-nav-item" data-target="stage-6"><span class="flow-nav-num">06</span>Future State</a></li>
+            <li><a class="flow-nav-item" data-target="stage-7"><span class="flow-nav-num">07</span>Bridge to Solution</a></li>
+          </ul>
+        </aside>
+
+        <!-- Stages -->
+        <div class="stages">
+
+          <article class="stage" id="stage-1">
+            <div class="stage-header">
+              <div class="stage-num">01</div>
+              <h3 class="stage-title">Set the Context</h3>
+            </div>
+            <div class="stage-subtitle">Lead with a point of view. Frame the problem space before the buyer does.</div>
+            <div class="stage-goal">Goal — guide the conversation before the buyer defaults to current thinking</div>
+            <p>
+              Don't open with "tell me about your challenges." That cedes the frame to the buyer's
+              existing mental model. Instead, anchor the conversation in what you've seen across
+              the market — and invite them to react.
+            </p>
+            <div class="example">
+              <div class="example-label">Example phrasing</div>
+              <div class="example-quote">"Most organizations we work with don't struggle with X anymore. The challenge is usually Y…"</div>
+              <div class="example-quote">"How are you handling that today?"</div>
+            </div>
+          </article>
+
+          <article class="stage" id="stage-2">
+            <div class="stage-header">
+              <div class="stage-num">02</div>
+              <h3 class="stage-title">Understand the Current Approach</h3>
+            </div>
+            <div class="stage-subtitle">Map what they're doing today — tools, process, people.</div>
+            <div class="stage-goal">Goal — identify systems, workflow, and stakeholders</div>
+            <p>Before you can contrast, you need a clear picture of "normal." Get specific.</p>
+            <ul class="stage-list">
+              <li>Systems and tools in use</li>
+              <li>Workflow or process</li>
+              <li>Who is involved</li>
+              <li>What "normal" looks like day-to-day</li>
+            </ul>
+          </article>
+
+          <article class="stage" id="stage-3">
+            <div class="stage-header">
+              <div class="stage-num">03</div>
+              <h3 class="stage-title">Surface Friction and Gaps</h3>
+            </div>
+            <div class="stage-subtitle">Identify where the current approach breaks down.</div>
+            <div class="stage-goal">Goal — uncover inefficiencies, limitations, and workarounds</div>
+            <p>Most buyers have normalized the pain. Your job is to make the friction visible again.</p>
+            <ul class="stage-list">
+              <li>Manual work</li>
+              <li>Delays and lag time</li>
+              <li>Lack of clarity or visibility</li>
+              <li>Inconsistent outcomes</li>
+              <li>Reliance on multiple systems</li>
+              <li>Workarounds people stopped noticing</li>
+            </ul>
+          </article>
+
+          <article class="stage" id="stage-4">
+            <div class="stage-header">
+              <div class="stage-num">04</div>
+              <h3 class="stage-title">Explore Impact and Consequences</h3>
+            </div>
+            <div class="stage-subtitle">Translate problems into real-world impact.</div>
+            <div class="stage-goal">Goal — create urgency by connecting friction to stakes</div>
+            <p>
+              A problem without consequence is a problem without priority. Move from what's
+              broken to what breaking it costs.
+            </p>
+            <ul class="stage-list">
+              <li>Time delays</li>
+              <li>Direct and indirect cost</li>
+              <li>Risk and exposure</li>
+              <li>Customer or stakeholder experience</li>
+              <li>Internal pressure and reputation</li>
+            </ul>
+          </article>
+
+          <article class="stage" id="stage-5">
+            <div class="stage-header">
+              <div class="stage-num">05</div>
+              <h3 class="stage-title">Introduce Alternative Thinking</h3>
+            </div>
+            <div class="stage-subtitle">Gently reframe the problem. Introduce a new lens.</div>
+            <div class="stage-goal">Goal — differentiate your approach <strong>before</strong> showing your product</div>
+            <p>
+              This is where discovery becomes insight. You're not pitching yet — you're
+              changing the criteria the buyer will use to evaluate any solution.
+            </p>
+            <ul class="stage-list">
+              <li>Highlight the limitations of current methods</li>
+              <li>Introduce a new category or lens</li>
+              <li>Compare approaches — without naming your product</li>
+              <li>Shift the conversation from "features" to "philosophy"</li>
+            </ul>
+          </article>
+
+          <article class="stage" id="stage-6">
+            <div class="stage-header">
+              <div class="stage-num">06</div>
+              <h3 class="stage-title">Define the Future State</h3>
+            </div>
+            <div class="stage-subtitle">Let the buyer describe what success looks like.</div>
+            <div class="stage-goal">Goal — get them to articulate your value in their own words</div>
+            <p>
+              When the buyer names the outcome, they sell it to themselves. Your job is
+              to ask, not to tell.
+            </p>
+            <ul class="stage-list">
+              <li>What "better" looks like</li>
+              <li>What changes in their workflow</li>
+              <li>What outcomes measurably improve</li>
+              <li>Who else benefits and how</li>
+            </ul>
+          </article>
+
+          <div class="bridge" id="stage-7">
+            <div class="bridge-content">
+              <div class="bridge-eyebrow">07 · Transition Out of Discovery</div>
+              <h3>Bridge to Solution.</h3>
+              <p>
+                Only now do you introduce your product. The problem is clear, the stakes are
+                agreed, the criteria are set. Your solution should land as the logical
+                conclusion of a conversation the buyer helped build.
+              </p>
+              <div class="example">
+                <div class="example-label">Example phrasing</div>
+                <div class="example-quote">"Based on what you've described, let me show you how we approach that…"</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEST PRACTICES -->
+  <section class="practices">
+    <div class="container">
+      <div class="section-head">
+        <div class="num">02</div>
+        <div>
+          <h2>Seven <em>Dunford-inspired</em> practices.</h2>
+          <p>
+            The mechanics above only work if the underlying posture is right. These are
+            the habits that separate great discovery from competent Q&A.
+          </p>
+        </div>
+      </div>
+
+      <div class="practices-grid">
+        <div class="practice">
+          <div class="practice-num">01</div>
+          <h4 class="practice-title">Lead, <em>don't follow</em>.</h4>
+          <p class="practice-desc">Discovery is not passive Q&A. The rep guides the conversation with a point of view.</p>
+          <div class="practice-pointer">You set the frame — or the buyer will.</div>
+        </div>
+
+        <div class="practice">
+          <div class="practice-num">02</div>
+          <h4 class="practice-title">Anchor to a <em>specific</em> problem.</h4>
+          <p class="practice-desc">Don't chase random pain points. Stay focused on the problem your solution is built for.</p>
+          <div class="practice-pointer">Scope discipline is positioning discipline.</div>
+        </div>
+
+        <div class="practice">
+          <div class="practice-num">03</div>
+          <h4 class="practice-title">Surface the <em>current alternative</em>.</h4>
+          <p class="practice-desc">You're always competing with the status quo, existing tools, and internal processes. Make those visible.</p>
+          <div class="practice-pointer">If you can't name the alternative, you can't beat it.</div>
+        </div>
+
+        <div class="practice">
+          <div class="practice-num">04</div>
+          <h4 class="practice-title">Create <em>insight</em>, not just data.</h4>
+          <p class="practice-desc">If the buyer learns nothing new from the call, they leave with no urgency and no reason to prioritize.</p>
+          <div class="practice-pointer">Teach something. Every call.</div>
+        </div>
+
+        <div class="practice">
+          <div class="practice-num">05</div>
+          <h4 class="practice-title">Don't rush to <em>demo</em>.</h4>
+          <p class="practice-desc">No product until the problem is clear and agreed upon. Demoing too early turns strategy into a feature tour.</p>
+          <div class="practice-pointer">The demo lands when the problem is earned.</div>
+        </div>
+
+        <div class="practice">
+          <div class="practice-num">06</div>
+          <h4 class="practice-title">Stay in the problem <em>longer</em> than feels comfortable.</h4>
+          <p class="practice-desc">This is where deals are won. Most reps bail to solution-mode two questions too early.</p>
+          <div class="practice-pointer">Lean into the silence.</div>
+        </div>
+
+        <div class="practice">
+          <div class="practice-num">07</div>
+          <h4 class="practice-title">Tie everything to <em>outcomes</em>.</h4>
+          <p class="practice-desc">Move the language from features to impact. Buyers don't pay for capability — they pay for consequence.</p>
+          <div class="practice-pointer">Outcomes are the only currency that matters.</div>
+        </div>
+
+        <div class="practice" style="background: linear-gradient(135deg, rgba(212,163,86,0.08), transparent);">
+          <div class="practice-num">00</div>
+          <h4 class="practice-title">Read the <em>room</em>.</h4>
+          <p class="practice-desc">All of the above flexes. Senior buyers want the point of view up front; operators may need to walk through current state first. Adapt, don't script.</p>
+          <div class="practice-pointer">The framework serves the conversation, not the other way around.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHEAT SHEET -->
+  <section class="cheat">
+    <div class="container">
+      <div class="cheat-inner">
+        <div class="cheat-eyebrow">The Cheat Sheet</div>
+        <h2>If you had to <em>compress it</em> — seven moves.</h2>
+        <p class="cheat-sub">
+          Print this. Put it next to your monitor. Every call should move through these
+          in order, even if the time spent on each varies dramatically.
+        </p>
+        <ul class="cheat-list">
+          <li><span>Frame the problem</span></li>
+          <li><span>Understand approach</span></li>
+          <li><span>Expose gaps</span></li>
+          <li><span>Quantify impact</span></li>
+          <li><span>Reframe thinking</span></li>
+          <li><span>Define success</span></li>
+          <li><span>Show solution</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section class="closing">
+    <div class="container">
+      <p class="closing-quote">
+        Great discovery <em>reframes the problem</em> so your solution becomes the obvious next step.
+      </p>
+      <div class="closing-attrib">— The One-Line Summary</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container" style="display: flex; justify-content: space-between; width: 100%;">
+      <span>The Discovery Framework · Coaching Guide</span>
+      <span>Aligned with April Dunford's positioning philosophy</span>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  // Active stage tracking on scroll
+  const navItems = document.querySelectorAll('.flow-nav-item');
+  const stages = document.querySelectorAll('.stage, .bridge');
+
+  navItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.getElementById(item.dataset.target);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navItems.forEach(item => {
+          item.classList.toggle('active', item.dataset.target === id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+
+  stages.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
